@@ -158,7 +158,9 @@ local function spawnPeds()
                 local zone = BoxZone:Create(current.coords.xyz, options.length, options.width, {
                     name = "zone_cityhall_"..ped,
                     heading = current.coords.w,
-                    debugPoly = false
+                    debugPoly = false,
+                    minZ = current.coords.z - 3.0,
+                    maxZ = current.coords.z + 2.0
                 })
                 zone:onPlayerInOut(function(inside)
                     if isLoggedIn and closestCityhall and closestDrivingSchool then
@@ -241,19 +243,21 @@ end)
 
 -- NUI Callbacks
 
-RegisterNUICallback('close', function()
+RegisterNUICallback('close', function(_, cb)
     setCityhallPageState(false, false)
     if not Config.UseTarget and inRangeCityhall then exports['qb-core']:DrawText('[E] Open Cityhall') end -- Reopen interaction when you're still inside the zone
+    cb('ok')
 end)
 
-RegisterNUICallback('requestId', function(id)
+RegisterNUICallback('requestId', function(id, cb)
     local license = Config.Cityhalls[closestCityhall].licenses[id.type]
     if inRangeCityhall and license and id.cost == license.cost then
-        TriggerServerEvent('qb-cityhall:server:requestId', id.type, id.cost)
+        TriggerServerEvent('qb-cityhall:server:requestId', id.type, closestCityhall)
         QBCore.Functions.Notify(('You have received your %s for $%s'):format(license.label, id.cost), 'success', 3500)
     else
         QBCore.Functions.Notify(Lang:t('error.not_in_range'), 'error')
     end
+    cb('ok')
 end)
 
 RegisterNUICallback('requestLicenses', function(_, cb)
@@ -267,12 +271,13 @@ RegisterNUICallback('requestLicenses', function(_, cb)
     cb(availableLicenses)
 end)
 
-RegisterNUICallback('applyJob', function(job)
+RegisterNUICallback('applyJob', function(job, cb)
     if inRangeCityhall then
         TriggerServerEvent('qb-cityhall:server:ApplyJob', job, Config.Cityhalls[closestCityhall].coords)
     else
         QBCore.Functions.Notify(Lang:t('error.not_in_range'), 'error')
     end
+    cb('ok')
 end)
 
 -- Threads
