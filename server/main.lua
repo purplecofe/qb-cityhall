@@ -26,7 +26,7 @@ local function giveStarterItems()
             info.firstname = Player.PlayerData.charinfo.firstname
             info.lastname = Player.PlayerData.charinfo.lastname
             info.birthdate = Player.PlayerData.charinfo.birthdate
-            info.type = "Class C Driver License"
+            info.type = "駕駛執照"
         end
         Player.Functions.AddItem(v.item, 1, nil, info)
     end
@@ -43,7 +43,7 @@ end)
 RegisterNetEvent('qb-cityhall:server:requestId', function(item, cost)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if not Player.Functions.RemoveMoney("cash", cost) then return TriggerClientEvent('QBCore:Notify', src, ('You don\'t have enough money on you, you need %s cash'):format(cost), 'error') end
+    if not Player.Functions.RemoveMoney("cash", cost) then return TriggerClientEvent('QBCore:Notify', src, ('你的錢不夠, 需要 %s 元'):format(cost), 'error') end
     local info = {}
     if item == "id_card" then
         info.citizenid = Player.PlayerData.citizenid
@@ -56,7 +56,7 @@ RegisterNetEvent('qb-cityhall:server:requestId', function(item, cost)
         info.firstname = Player.PlayerData.charinfo.firstname
         info.lastname = Player.PlayerData.charinfo.lastname
         info.birthdate = Player.PlayerData.charinfo.birthdate
-        info.type = "Class C Driver License"
+        info.type = "駕駛執照"
     elseif item == "weaponlicense" then
         info.firstname = Player.PlayerData.charinfo.firstname
         info.lastname = Player.PlayerData.charinfo.lastname
