@@ -167,13 +167,13 @@ local function spawnPeds()
                         if inside then
                             if current.drivingschool then
                                 inRangeDrivingSchool = true
-                                exports['qb-core']:DrawText('[E] Take Driving Lessons')
+                                exports['ps-ui']:DisplayText('[E] Take Driving Lessons', 'primary')
                             elseif current.cityhall then
                                 inRangeCityhall = true
-                                exports['qb-core']:DrawText('[E] Open Cityhall')
+                                exports['ps-ui']:DisplayText('[E] Open Cityhall', 'primary')
                             end
                         else
-                            exports['qb-core']:HideText()
+                            exports['ps-ui']:HideText()
                             if current.drivingschool then
                                 inRangeDrivingSchool = false
                             elseif current.cityhall then
@@ -245,7 +245,7 @@ end)
 
 RegisterNUICallback('close', function(_, cb)
     setCityhallPageState(false, false)
-    if not Config.UseTarget and inRangeCityhall then exports['qb-core']:DrawText('[E] Open Cityhall') end -- Reopen interaction when you're still inside the zone
+    if not Config.UseTarget and inRangeCityhall then exports['ps-ui']:DisplayText('[E] Open Cityhall') end -- Reopen interaction when you're still inside the zone
     cb('ok')
 end)
 
@@ -314,7 +314,7 @@ CreateThread(function()
                             setCityhallPageState(true, true)
                             exports['qb-core']:KeyPressed()
                             Wait(500)
-                            exports['qb-core']:HideText()
+                            exports['ps-ui']:HideText()
                             sleep = 1000
                         end
                     end
@@ -325,7 +325,7 @@ CreateThread(function()
                         sleep = 5000
                         exports['qb-core']:KeyPressed()
                         Wait(500)
-                        exports['qb-core']:HideText()
+                        exports['ps-ui']:HideText()
                     end
                 end
             end
